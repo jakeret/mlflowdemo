@@ -1,10 +1,13 @@
-import sys
+import warnings
+warnings.filterwarnings("ignore")
 
+import sys
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.linear_model import ElasticNet
 
+import mlflow
 import mlflow.sklearn
 
 
@@ -27,7 +30,9 @@ def run():
     mlflow.log_metric("r2", r2)
     mlflow.log_metric("mae", mae)
 
-    mlflow.log_artifact("plot.png")
+    mlflow.sklearn.log_model(model, "model")
+
+
 
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))
